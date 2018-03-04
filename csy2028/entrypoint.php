@@ -5,14 +5,15 @@ class EntryPoint
 {
     private $routes;
 
-    public function __construct($routes)
+    public function __construct(\CSY2028\Routes $routes)
     {
         $this->routes = $routes;
     }
 
     public function run()
     {
-        $page = $this->routes->callControllerAction();
+        $route = ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/');
+        $page = $this->routes->callControllerFunction($route);
 
         $output = $this->loadTemplate('../templates/' . $page['template'], $page['variables']);
         $title = $page['title'];

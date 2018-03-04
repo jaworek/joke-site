@@ -1,9 +1,9 @@
 <?php
 
 namespace Ijdb;
-class Routes
+class Routes implements \CSY2028\Routes
 {
-    public function callControllerAction()
+    public function callControllerFunction($route)
     {
         require '../database.php';
 
@@ -13,7 +13,6 @@ class Routes
         $jokeController = new \Ijdb\Controllers\Joke($jokeTable);
         $categoryController = new \Ijdb\Controllers\Category($categoryTable);
 
-        $route = ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/');
 //        if ($route == '') {
 //            $page = $jokeController->home();
 //        } else if ($route == 'joke/jokes') {
