@@ -1,11 +1,12 @@
 <?php
 
 namespace CSY2028;
+
 class EntryPoint
 {
     private $routes;
 
-    public function __construct(\CSY2028\Routes $routes)
+    public function __construct(Routes $routes)
     {
         $this->routes = $routes;
     }
@@ -13,7 +14,12 @@ class EntryPoint
     public function run()
     {
         $route = ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/');
-        $page = $this->routes->callControllerFunction($route);
+        $method = $_SERVER['REQUEST_METHOD'];
+        $routes = $this->routes->getRoutes($route);
+        $controller = $routes[$route][$method]['controller'];
+        $action = $routes[$route][$method]['action'];
+
+        $page = $controller->$action();
 
         $output = $this->loadTemplate('../templates/' . $page['template'], $page['variables']);
         $title = $page['title'];

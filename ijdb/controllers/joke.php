@@ -78,23 +78,64 @@ class Joke
         ];
     }
 
+    public function saveJoke()
+    {
+        $this->jokesTable->save($_POST['joke']);
+
+        header('location: modify');
+        exit();
+    }
+
+    public function add()
+    {
+        $jokes = $this->jokesTable->findAll();
+
+        return [
+            'template' => 'joke/modify.html.php',
+            'title' => 'Modify a Joke',
+            'variables' => [
+                'jokes' => $jokes,
+                'joke' => '',
+                'action' => 'Add'
+            ]
+        ];
+    }
+
     public function edit()
     {
-        if (isset($_POST['submit'])) {
-            $this->jokesTable->save($_POST['joke']);
+        $jokes = $this->jokesTable->findAll();
+        $joke = $this->jokesTable->find('id', $_GET['id'])[0];
 
-            header('location: modify');
-            exit();
-        }
+        return [
+            'template' => 'joke/modify.html.php',
+            'title' => 'Modify a Joke',
+            'variables' => [
+                'jokes' => $jokes,
+                'joke' => $joke,
+                'action' => 'Edit'
+            ]
+        ];
+    }
+
+    public function saveDelete()
+    {
+        $this->jokesTable->delete('id', $_GET['id']);
+
+        header('location: modify');
+        exit();
     }
 
     public function delete()
     {
-        if (isset($_POST['submit'])) {
-            $this->jokesTable->delete('id', $_GET['id']);
+        $jokes = $this->jokesTable->findAll();
 
-            header('location: modify');
-            exit();
-        }
+        return [
+            'template' => 'joke/modify.html.php',
+            'title' => 'Modify a Joke',
+            'variables' => [
+                'jokes' => $jokes,
+                'action' => 'delete'
+            ]
+        ];
     }
 }

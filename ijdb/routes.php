@@ -3,7 +3,7 @@
 namespace Ijdb;
 class Routes implements \CSY2028\Routes
 {
-    public function callControllerFunction($route)
+    public function getRoutes()
     {
         require '../database.php';
 
@@ -13,31 +13,57 @@ class Routes implements \CSY2028\Routes
         $jokeController = new \Ijdb\Controllers\Joke($jokeTable);
         $categoryController = new \Ijdb\Controllers\Category($categoryTable);
 
-//        if ($route == '') {
-//            $page = $jokeController->home();
-//        } else if ($route == 'joke/jokes') {
-//            $page = $jokeController->jokes();
-//        } else if ($route == 'joke/modify') {
-//            $page = $jokeController->modify();
-//        } else {
-//            $page = $jokeController->home();
-//        }
+        $routes = [
+            'joke/jokes' => [
+                'GET' => [
+                    'controller' => $jokeController,
+                    'action' => 'jokes'
+                ]
+            ],
+            'joke/modify' => [
+                'GET' => [
+                    'controller' => $jokeController,
+                    'action' => 'modify'
+                ]
+            ],
+            'joke/add' => [
+                'GET' => [
+                    'controller' => $jokeController,
+                    'action' => 'add'
+                ],
+                'POST' => [
+                    'controller' => $jokeController,
+                    'action' => 'saveJoke'
+                ]
+            ],
+            'joke/edit' => [
+                'GET' => [
+                    'controller' => $jokeController,
+                    'action' => 'edit'
+                ],
+                'POST' => [
+                    'controller' => $jokeController,
+                    'action' => 'saveJoke'
+                ]
+            ],
+            'joke/delete' => [
+                'GET' => [
+                    'controller' => $jokeController,
+                    'action' => 'delete'
+                ],
+                'POST' => [
+                    'controller' => $jokeController,
+                    'action' => 'saveDelete'
+                ]
+            ],
+            '' => [
+                'GET' => [
+                    'controller' => $jokeController,
+                    'action' => 'home'
+                ]
+            ]
+        ];
 
-        switch ($route) {
-            case '':
-                $page = $jokeController->home();
-                break;
-            case 'joke/jokes':
-                $page = $jokeController->jokes();
-                break;
-            case 'joke/modify':
-                $page = $jokeController->modify();
-                break;
-            default:
-                $page = $jokeController->home();
-                break;
-        }
-
-        return $page;
+        return $routes;
     }
 }
